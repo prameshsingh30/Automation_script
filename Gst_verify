@@ -1,0 +1,30 @@
+import pandas as pd
+file_path = "/home/pramesh/Downloads/Gst_verify.xlsx"
+
+def check_gst_presence(file_path):
+    try:
+        # Read the Excel file
+        df = pd.read_excel(file_path)
+        
+        # Ensure required columns exist
+        required_columns = ["profile_id", "co_name", "city", "state", "pincode", "GST to be Updated"]
+        for col in required_columns:
+            if col not in df.columns:
+                raise ValueError(f"Missing required column: {col}")
+        
+        # Check for missing GST numbers
+        missing_gst_profiles = df[df["GST to be Updated"].isna()]
+        
+        # Print the result
+        if missing_gst_profiles.empty:
+            print("All profiles have a GST number.")
+        else:
+            print("Profiles missing GST numbers:")
+            print(missing_gst_profiles)
+        
+    except Exception as e:
+        print(f"Error: {e}")
+
+# Run the function
+check_gst_presence(file_path)
+
